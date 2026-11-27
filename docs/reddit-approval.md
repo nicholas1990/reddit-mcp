@@ -15,6 +15,8 @@ Since 11 November 2025 Reddit no longer lets anyone create an API app on their o
 
 The research is meant to help design a personal app that is **not launched and earns nothing from Reddit data**. If that app later becomes a business, the use may stop counting as non-commercial and you would have to ask again. Write the request so it is true today, and do not promise what you cannot keep.
 
+> **The text to send is in [reddit-request.md](reddit-request.md)** (the sections below explain the reasons behind it). The form is a single text field: Reddit's own page for developers says to go through Devvit first and to file this ticket only when Devvit does not support the use.
+
 ## What to say: be specific, and true
 
 A request that says "research" is refused. One that names the question, the communities, the volume and the output is read. The plan below is real, so you can say it without bending anything: it is the competitor study of Lumen, a personal photo-sharing app, starting from Instagram.

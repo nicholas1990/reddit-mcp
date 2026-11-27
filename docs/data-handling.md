@@ -9,5 +9,6 @@ What this tool does with Reddit data, in plain words (the same text is used in t
 - **Deleted content.** Posts and comments that are removed or deleted are not shown. Because nothing is stored, a deletion on Reddit is honoured at the next request.
 - **People.** Usernames come with the text they wrote because the answer must be citable; the tool does not profile users, does not follow a person across communities, and has no function that lists a user's history.
 - **Adult content** is excluded by default.
-- **Limits.** Below 90 requests per minute (default 50), `Retry-After` honoured, descriptive `User-Agent`.
+- **Limits.** Below 90 requests per minute (default 50), at most **100 requests per session** (a hard cap in the code), `Retry-After` honoured, descriptive `User-Agent`.
+- **Scope.** The tool is configured with a short list of communities; anything outside the list is refused before any request is sent, and a search over all of Reddit is not possible.
 - **Reports.** The assistant is asked to cite the permalink of what it uses. Quotes in notes are short and attributed.

@@ -21,9 +21,12 @@ export function makeReddit(cfg: Config, d: Deps = {}) {
   const sleep = d.sleep ?? ((ms: number) => new Promise<void>((r) => setTimeout(r, ms)))
   let token: { value: string; expires: number } | undefined
   const sent: number[] = []                       // times of the last requests (sliding minute)
+  let used = 0                                     // requests really sent to Reddit in this run (token requests included)
   const cache = new Map<string, { at: number; body: unknown }>()
 
   async function throttle() {
+    if (used >= cfg.maxRequests) throw new RedditError(`Request budget of this session reached (${cfg.maxRequests}). Start a new session to continue.`, 429)
+    used++
     for (;;) {
       const t = now()
       while (sent.length && t - sent[0] >= 60_000) sent.shift()
@@ -76,6 +79,6 @@ export function makeReddit(cfg: Config, d: Deps = {}) {
     throw new RedditError('Reddit is limiting requests right now: try again in a few minutes.', 429)
   }
 
-  return { get, stats: () => ({ lastMinute: sent.length, cached: cache.size }) }
+  return { get, stats: () => ({ lastMinute: sent.length, cached: cache.size, used }) }
 }
 export type Reddit = ReturnType<typeof makeReddit>

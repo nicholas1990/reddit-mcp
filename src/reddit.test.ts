@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { type Config, loadConfig } from './config'
 import { makeReddit } from './reddit'
 
-const cfg: Config = { clientId: 'id', clientSecret: 'secret', userAgent: 'linux:test:0 (by /u/x)', ratePerMinute: 3, cacheMinutes: 10, allowNsfw: false }
+const cfg: Config = { clientId: 'id', clientSecret: 'secret', userAgent: 'linux:test:0 (by /u/x)', ratePerMinute: 3, cacheMinutes: 10, allowNsfw: false, allowedSubreddits: [], maxRequests: 100 }
 type Call = { url: string; method: string; headers: Record<string, string> }
 
 function setup(handler: (url: string, n: number) => Response, c: Config = cfg) {
@@ -63,4 +63,11 @@ test('le chiavi: mancanti = errore che dice cosa manca; il file deve essere priv
   chmodSync(f, 0o644); expect(() => loadConfig({}, f)).toThrow('chmod 600')
   chmodSync(f, 0o600); const c = loadConfig({}, f)
   expect(c).toMatchObject({ clientId: 'a', clientSecret: 'b', ratePerMinute: 50, cacheMinutes: 10, allowNsfw: false })   // 500 è fuori scala: resta il valore sicuro
+})
+
+test('il tetto di richieste per sessione: oltre quello non parte più niente verso Reddit', async () => {
+  const s = setup((u) => (u.includes('access_token') ? token() : ok()), { ...cfg, ratePerMinute: 90, maxRequests: 3, cacheMinutes: 0 })
+  await s.reddit.get('/a'); await s.reddit.get('/b')   // token + 2 = 3
+  await expect(s.reddit.get('/c')).rejects.toThrow('budget')
+  expect(s.calls.length).toBe(3)
 })

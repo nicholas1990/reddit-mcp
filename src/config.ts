@@ -15,6 +15,8 @@ export type Config = {
   ratePerMinute: number      // our own ceiling, always below Reddit's 100 per minute
   cacheMinutes: number
   allowNsfw: boolean
+  allowedSubreddits: string[]   // when not empty, ONLY these communities can be searched or read (lowercase)
+  maxRequests: number           // hard cap of Reddit requests for one run of the server
 }
 
 export function parseEnv(text: string): Record<string, string> {
@@ -46,5 +48,7 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     ratePerMinute: num('REDDIT_RATE_PER_MIN', 50, 1, 90),
     cacheMinutes: num('REDDIT_CACHE_MINUTES', 10, 0, 60),
     allowNsfw: get('REDDIT_ALLOW_NSFW') === 'true',
+    allowedSubreddits: get('REDDIT_ALLOWED_SUBREDDITS').split(',').map((s) => s.trim().replace(/^r\//i, '').toLowerCase()).filter(Boolean),
+    maxRequests: num('REDDIT_MAX_REQUESTS', 100, 1, 1000),
   }
 }

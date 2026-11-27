@@ -18,6 +18,7 @@ Every answer starts with a notice that the text is **untrusted data written by s
 
 - Official API only, with an app-only OAuth token and a descriptive `User-Agent`.
 - Keeps **below 90 requests per minute** (default 50; Reddit's free limit is 100) with a sliding window, obeys `Retry-After` on a 429, and caches answers for 10 minutes so the same question never costs two requests.
+- An optional **allow-list of communities** (`REDDIT_ALLOWED_SUBREDDITS`): only those can be searched or read, and a search over all of Reddit is refused. And a **hard cap of requests per session** (`REDDIT_MAX_REQUESTS`, default 100).
 - No storage of Reddit content, no redistribution, **no use to train models**. Details in [docs/data-handling.md](docs/data-handling.md).
 
 ## Setup

@@ -38,7 +38,7 @@ A request that says "research" is refused. One that names the question, the comm
 
 **Type of use:** Personal, non-commercial research. Not a moderation tool. Not academic research.
 
-**Who you are:** <your first name>, an independent developer. Reddit account: u/<your username>. Contact: <your email>. Source code: <link to the repository>.
+**Who you are:** <your first name>, an independent developer. Reddit account: u/<your username>. Contact: <your email>. Source code: https://github.com/nicholas1990/reddit-mcp
 
 **What the app does:**
 > reddit-mcp is a small read-only tool for my own use. When I ask a research question, an AI assistant uses it to search six named communities and read the posts and comments that answer it, then summarises them for me with links to the originals. It never posts, votes, comments or messages, it does not scrape, and it only runs when I ask.

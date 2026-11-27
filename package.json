@@ -1,0 +1,24 @@
+{
+  "name": "reddit-mcp",
+  "version": "0.1.0",
+  "description": "A small, read-only MCP server to search and read Reddit through the official Data API (OAuth, rate-limited, cached).",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "bun src/index.ts",
+    "test": "bun test",
+    "typecheck": "bun --bun tsc -p tsconfig.json",
+    "lint": "biome lint .",
+    "check": "bun run typecheck && bun run lint && bun run test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.9",
+    "@types/bun": "^1.4.5",
+    "typescript": "^7.0.2"
+  }
+}

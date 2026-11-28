@@ -31,10 +31,12 @@ const config: Config = {
     hooks: {onBrokenMarkdownLinks: 'throw'},
   },
   future: {
-    v4: true, // opt in to the behaviour Docusaurus 4 will have (CSS cascade layers, cleaner head tags)
-    faster: true, // rspack, swc and lightning CSS: much faster builds
+    v4: true, // opt in to the behaviour Docusaurus 4 will have: CSS cascade layers, cleaner head tags, and Docusaurus Faster (rspack, swc, lightning CSS)
   },
   headTags: [{tagName: 'meta', attributes: {name: 'theme-color', content: "#d9480f"}}],
+  plugins: [['docusaurus-plugin-llms', {docsDir: [{path: "i18n/en/docusaurus-plugin-content-docs/current", routeBasePath: '/'}], title: "reddit-mcp", description: "A read-only MCP server to search and read Reddit through the official Data API"}]],
+
+  themes: [['@easyops-cn/docusaurus-search-local', {hashed: true, language: ["en","it"], docsRouteBasePath: '/', indexBlog: false, explicitSearchResultPath: true, highlightSearchTermsOnTargetPage: true}]],
 
   presets: [
     [

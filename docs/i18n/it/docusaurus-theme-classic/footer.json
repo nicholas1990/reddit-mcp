@@ -1,6 +1,3 @@
 {
-  "copyright": {
-    "message": "reddit-mcp è un progetto indipendente, non affiliato né approvato da Reddit, Inc.",
-    "description": "The footer copyright"
-  }
+  "copyright": {"message":"reddit-mcp è un progetto indipendente, non affiliato né approvato da Reddit, Inc.","description":"Managed by Notarius (notarius sync). The copyright line of the footer, from notarius.json."}
 }

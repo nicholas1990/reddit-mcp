@@ -22,11 +22,19 @@ const config: Config = {
     localeConfigs: {"en": {label: "English", htmlLang: "en"}, "it": {label: "Italiano", htmlLang: "it"}},
   },
 
+  // Strict: a broken link, a broken #anchor or two pages on one address fail the build instead of shipping.
   onBrokenLinks: 'throw',
+  onBrokenAnchors: 'throw',
+  onDuplicateRoutes: 'throw',
   markdown: {
     format: 'detect', // .md stays CommonMark: { and < in text do not break the build
     hooks: {onBrokenMarkdownLinks: 'throw'},
   },
+  future: {
+    v4: true, // opt in to the behaviour Docusaurus 4 will have (CSS cascade layers, cleaner head tags)
+    faster: true, // rspack, swc and lightning CSS: much faster builds
+  },
+  headTags: [{tagName: 'meta', attributes: {name: 'theme-color', content: "#d9480f"}}],
 
   presets: [
     [
@@ -36,6 +44,8 @@ const config: Config = {
           path: "i18n/en/docusaurus-plugin-content-docs/current",
           routeBasePath: '/',
           sidebarPath: './sidebars.ts',
+          // "Edit this page" opens the page in content/, which is what to change, not the generated copy.
+          editUrl: ({locale, docPath}) => "https://github.com/nicholas1990/reddit-mcp/edit/main/docs/content/" + locale + '/' + docPath,
         },
         blog: false,
         theme: {customCss: ['./src/css/notarius.css', './src/css/custom.css']},
@@ -44,6 +54,9 @@ const config: Config = {
   ],
 
   themeConfig: {
+    colorMode: {respectPrefersColorScheme: true},
+    docs: {sidebar: {hideable: true, autoCollapseCategories: true}},
+    tableOfContents: {minHeadingLevel: 2, maxHeadingLevel: 4},
     navbar: {
       title: "reddit-mcp",
       items: [{type: 'localeDropdown', position: 'right'}, {href: "https://github.com/nicholas1990/reddit-mcp", label: 'GitHub', position: 'right'}],
@@ -52,7 +65,7 @@ const config: Config = {
       style: 'dark',
       copyright: "reddit-mcp is an independent project, not affiliated with or endorsed by Reddit, Inc.",
     },
-    prism: {theme: prismThemes.github, darkTheme: prismThemes.dracula, additionalLanguages: ['bash', 'json']},
+    prism: {theme: prismThemes.github, darkTheme: prismThemes.dracula, additionalLanguages: ["bash","json"]},
   } satisfies Preset.ThemeConfig,
 };
 

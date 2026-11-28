@@ -13,5 +13,6 @@
     "en": "reddit-mcp is an independent project, not affiliated with or endorsed by Reddit, Inc.",
     "it": "reddit-mcp è un progetto indipendente, non affiliato né approvato da Reddit, Inc."
   },
-  "llms": true
+  "llms": true,
+  "social": true
 }

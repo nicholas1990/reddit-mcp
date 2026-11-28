@@ -57,6 +57,8 @@ const config: Config = {
 
   themeConfig: {
     colorMode: {respectPrefersColorScheme: true},
+    image: 'img/social-card.png', // shown when a page is shared; drawn by Notarius
+    metadata: [{name: 'twitter:card', content: 'summary_large_image'}, {property: 'og:image:width', content: '1200'}, {property: 'og:image:height', content: '630'}],
     docs: {sidebar: {hideable: true, autoCollapseCategories: true}},
     tableOfContents: {minHeadingLevel: 2, maxHeadingLevel: 4},
     navbar: {

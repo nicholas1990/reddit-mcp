@@ -71,3 +71,16 @@ test('per-session request cap: past it, nothing more is sent to Reddit', async (
   await expect(s.reddit.get('/c')).rejects.toThrow('budget')
   expect(s.calls.length).toBe(3)
 })
+
+test('calls made at the same moment share one token request and one request for the same URL', async () => {
+  let release: (() => void) | undefined
+  const gate = new Promise<void>((r) => { release = r })
+  const s = setup((u) => (u.includes('access_token') ? token() : ok({ data: { children: [] }, n: 1 })))
+  const slow = (s.reddit as { get: typeof s.reddit.get }).get
+  const [a, b, c] = [slow('/search', { q: 'same' }), slow('/search', { q: 'same' }), slow('/search', { q: 'other' })]
+  release?.(); await gate
+  await Promise.all([a, b, c])
+  expect(s.calls.filter((x) => x.url.includes('access_token')).length).toBe(1)
+  expect(s.calls.filter((x) => x.url.includes('q=same')).length).toBe(1)
+  expect(s.calls.filter((x) => x.url.includes('q=other')).length).toBe(1)
+})

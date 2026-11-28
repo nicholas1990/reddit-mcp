@@ -1,5 +1,5 @@
 import type { Config } from '../config'
-import { RedditError } from '../reddit/client'
+import { RedditError } from '../reddit/errors'
 
 const POST_ID = /^[a-z0-9]{5,8}$/
 
@@ -20,4 +20,9 @@ export function postId(input: string): string {
 export function allowed(cfg: Config, name: string | undefined): boolean {
   return cfg.allowedSubreddits.length === 0 || (name !== undefined && cfg.allowedSubreddits.includes(name.toLowerCase()))
 }
-export const NOT_ALLOWED = (cfg: Config) => new RedditError(`Only these communities are allowed: ${cfg.allowedSubreddits.map((s) => `r/${s}`).join(', ')}.`)
+export const notAllowed = (cfg: Config) => new RedditError(`Only these communities are allowed: ${cfg.allowedSubreddits.map((s) => `r/${s}`).join(', ')}.`)
+
+/** The community a reddit.com link names (".../r/<name>/..."), if it names one. A bare post id cannot say. */
+export function linkedSubreddit(post: string): string | undefined {
+  return /\/r\/([A-Za-z0-9_]{2,21})\//.exec(post)?.[1]
+}

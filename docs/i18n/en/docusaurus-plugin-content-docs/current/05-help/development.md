@@ -15,10 +15,11 @@ bun run docs:build   # build this site (fails on a broken link)
 ## Where things are
 
 ```text
-src/index.ts          starts the server: wiring only
+src/index.ts          starts the server: reads the settings and connects
+src/server.ts         registers the tools (all read-only) and turns errors into short answers; unexpected ones go to stderr
 src/config.ts         settings and the credentials file
-src/reddit/           the Reddit client (read-only GET, rate limit, cache) and its tests
-src/tools/            the three tools, one file each, plus guards.ts (checks), schemas.ts (arguments) and types.ts
+src/reddit/           the Reddit client (read-only GET, rate limit, cache, one request for identical calls), its errors and the types of the data it reads
+src/tools/            the three tools, one file each, plus guards.ts (checks), schemas.ts (arguments) and types.ts (defineTool: arguments typed from the schema)
 src/format.ts         what the assistant receives: untrusted-content notice, cuts, removed posts left out
 test/                 end-to-end test and its fakes
 scripts/              gen-reference.ts writes the tools reference

@@ -1,11 +1,10 @@
 import type { Config } from '../config'
+import { RedditError } from './errors'
 
 const OAUTH = 'https://oauth.reddit.com'
 const TOKEN_URL = 'https://www.reddit.com/api/v1/access_token'
 
-export class RedditError extends Error {
-  constructor(message: string, readonly status?: number) { super(message) }
-}
+export { RedditError }
 
 type Deps = { fetch?: typeof fetch; now?: () => number; sleep?: (ms: number) => Promise<void> }
 
@@ -13,7 +12,7 @@ type Deps = { fetch?: typeof fetch; now?: () => number; sleep?: (ms: number) => 
  * A READ-ONLY client of Reddit's official Data API (application-only OAuth).
  * - It can only issue GET requests: there is no method that posts, votes, comments or changes anything.
  * - It keeps below `ratePerMinute` (a sliding window) and obeys Reddit's `Retry-After` on a 429.
- * - It caches answers for a few minutes, so the same question never costs a second request.
+ * - It caches answers for a few minutes, so the same question never costs a second request, and two identical questions asked at the same moment share one request.
  */
 export function makeReddit(cfg: Config, d: Deps = {}) {
   const doFetch = d.fetch ?? fetch
@@ -23,6 +22,8 @@ export function makeReddit(cfg: Config, d: Deps = {}) {
   const sent: number[] = []                       // times of the last requests (sliding minute)
   let used = 0                                     // requests really sent to Reddit in this run (token requests included)
   const cache = new Map<string, { at: number; body: unknown }>()
+  const inflight = new Map<string, Promise<unknown>>()   // requests on their way: the same URL asked again waits for the same answer
+  let tokenRequest: Promise<string> | undefined             // one token request at a time, however many calls need a token
 
   async function throttle() {
     if (used >= cfg.maxRequests) throw new RedditError(`Request budget of this session reached (${cfg.maxRequests}). Start a new session to continue.`, 429)
@@ -35,8 +36,13 @@ export function makeReddit(cfg: Config, d: Deps = {}) {
     }
   }
 
-  async function getToken(): Promise<string> {
-    if (token && token.expires - 30_000 > now()) return token.value
+  function getToken(): Promise<string> {
+    if (token && token.expires - 30_000 > now()) return Promise.resolve(token.value)
+    tokenRequest ??= requestToken().finally(() => { tokenRequest = undefined })
+    return tokenRequest
+  }
+
+  async function requestToken(): Promise<string> {
     await throttle()
     const res = await doFetch(TOKEN_URL, {
       method: 'POST',
@@ -58,7 +64,14 @@ export function makeReddit(cfg: Config, d: Deps = {}) {
     const url = `${OAUTH}${path}?${q}`
     const hit = cache.get(url)
     if (hit && cfg.cacheMinutes > 0 && now() - hit.at < cfg.cacheMinutes * 60_000) return hit.body
+    const pending = inflight.get(url)
+    if (pending) return pending
+    const request = fetchJson(url).finally(() => inflight.delete(url))
+    inflight.set(url, request)
+    return request
+  }
 
+  async function fetchJson(url: string): Promise<unknown> {
     for (let attempt = 0; attempt < 3; attempt++) {
       const bearer = await getToken()
       await throttle()

@@ -2,8 +2,8 @@ import { expect, test } from 'bun:test'
 import { chmodSync, mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { type Config, loadConfig } from './config'
-import { makeReddit } from './reddit'
+import { type Config, loadConfig } from '../config'
+import { makeReddit } from './client'
 
 const cfg: Config = { clientId: 'id', clientSecret: 'secret', userAgent: 'linux:test:0 (by /u/x)', ratePerMinute: 3, cacheMinutes: 10, allowNsfw: false, allowedSubreddits: [], maxRequests: 100 }
 type Call = { url: string; method: string; headers: Record<string, string> }

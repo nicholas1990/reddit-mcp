@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test'
-import type { Config } from './config'
-import { makeTools, postId } from './tools'
+import type { Config } from '../config'
+import { makeTools, postId } from './index'
 
 const cfg: Config = { clientId: 'i', clientSecret: 's', userAgent: 'ua', ratePerMinute: 50, cacheMinutes: 0, allowNsfw: false, allowedSubreddits: [], maxRequests: 100 }
 const post = (o: Record<string, unknown> = {}) => ({ kind: 't3', data: { id: 'abc12', title: 'Instagram insights are great', author: 'ann', subreddit: 'socialmedia', score: 42, upvote_ratio: 0.9, num_comments: 7, created_utc: 1_700_000_000, permalink: '/r/socialmedia/comments/abc12/x/', selftext: 'body text', is_self: true, over_18: false, ...o } })

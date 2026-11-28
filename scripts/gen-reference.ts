@@ -1,5 +1,5 @@
 /**
- * Writes the tools reference, in English and Italian, from the tools themselves (src/tools.ts), so it cannot drift.
+ * Writes the tools reference, in English and Italian, from the tools themselves (src/tools/), so it cannot drift.
  * `--check` only compares. Descriptions stay in English in both languages: they are the text the assistant reads.
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
@@ -30,7 +30,7 @@ function type(p: Record<string, any>): string {
   return `${p.type}${range ? ` (${range})` : ''}`
 }
 function page(w: Words): string {
-  const lines = ['---', `title: ${w.title}`, 'sidebar_position: 1', '---', '', `# ${w.title}`, '', '<!-- Generated from src/tools.ts by `bun run gen:docs`. Do not edit by hand. -->', '', w.intro, '', ...(w.note ? [w.note, ''] : [])]
+  const lines = ['---', `title: ${w.title}`, 'sidebar_position: 1', '---', '', `# ${w.title}`, '', '<!-- Generated from src/tools/ by `bun run gen:docs`. Do not edit by hand. -->', '', w.intro, '', ...(w.note ? [w.note, ''] : [])]
   for (const t of tools) {
     const schema = z.toJSONSchema(z.object(t.inputSchema), { io: 'input' }) as { properties: Record<string, any>; required?: string[] }
     lines.push(`## \`${t.name}\``, '', t.description, '', `| ${w.head.join(' | ')} |`, '| --- | --- | :---: | --- | --- |')

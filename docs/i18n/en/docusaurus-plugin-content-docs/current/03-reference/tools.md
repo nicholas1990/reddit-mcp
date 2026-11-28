@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # Tools
 
-<!-- Generated from src/tools.ts by `bun run gen:docs`. Do not edit by hand. -->
+<!-- Generated from src/tools/ by `bun run gen:docs`. Do not edit by hand. -->
 
 Three tools, all read-only (each is marked `readOnlyHint`). None of them can post, vote, comment or message: the client has no way to send anything but a `GET`. Every answer starts with a notice that the text is untrusted data written by strangers.
 

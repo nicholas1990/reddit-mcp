@@ -1,4 +1,4 @@
-import type { Config } from './config'
+import type { Config } from '../config'
 
 const OAUTH = 'https://oauth.reddit.com'
 const TOKEN_URL = 'https://www.reddit.com/api/v1/access_token'

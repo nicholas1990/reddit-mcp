@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # Strumenti
 
-<!-- Generated from src/tools.ts by `bun run gen:docs`. Do not edit by hand. -->
+<!-- Generated from src/tools/ by `bun run gen:docs`. Do not edit by hand. -->
 
 Tre strumenti, tutti di sola lettura (ognuno è marcato `readOnlyHint`). Nessuno può pubblicare, votare, commentare o scrivere messaggi: il client non sa inviare altro che un `GET`. Ogni risposta inizia con un avviso: il testo è un dato non fidato, scritto da sconosciuti.
 

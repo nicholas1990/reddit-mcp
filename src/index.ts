@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import pkg from '../package.json'
 import { loadConfig } from './config'
-import { makeReddit, RedditError } from './reddit'
+import { makeReddit, RedditError } from './reddit/client'
 import { makeTools } from './tools'
 
 let cfg: ReturnType<typeof loadConfig>

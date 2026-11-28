@@ -1,5 +1,5 @@
 name: ci
-# Eseguito solo da Gitea: GitHub ignora questa cartella (CI/CD di GitHub disattivata).
+# Run by Gitea only: GitHub ignores this folder (GitHub CI/CD is turned off).
 on: [push]
 jobs:
   check:
@@ -10,7 +10,7 @@ jobs:
         with:
           bun-version-file: .bun-version
       - run: bun install --frozen-lockfile
-      - run: bun run check   # tipi, lint, test (anche end-to-end), riferimento degli strumenti aggiornato
+      - run: bun run check   # types, lint, tests (end-to-end too), tools reference up to date
   docs:
     runs-on: ubuntu-latest
     steps:
@@ -20,5 +20,5 @@ jobs:
           node-version: "20"
       - run: npm ci
         working-directory: docs
-      - run: npm run build   # fallisce se un link nella documentazione è rotto
+      - run: npm run build   # fails if a link in the documentation is broken
         working-directory: docs

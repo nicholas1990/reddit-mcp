@@ -17,29 +17,29 @@ function setup(handler: (url: string, n: number) => Response, c: Config = cfg) {
 const token = () => Response.json({ access_token: 'tok', expires_in: 3600 })
 const ok = (body: unknown = { data: { children: [] } }) => Response.json(body)
 
-test('prende un token con le chiavi, poi chiede solo in GET con il token e lo user agent', async () => {
+test('gets a token with the credentials, then only sends GET with the token and the user agent', async () => {
   const s = setup((u) => (u.includes('access_token') ? token() : ok()))
-  await s.reddit.get('/search', { q: 'ciao' })
+  await s.reddit.get('/search', { q: 'hello' })
   expect(s.calls[0].url).toContain('/api/v1/access_token'); expect(s.calls[0].headers.Authorization).toBe(`Basic ${Buffer.from('id:secret').toString('base64')}`)
   expect(s.calls[1].method).toBe('GET'); expect(s.calls[1].headers.Authorization).toBe('Bearer tok'); expect(s.calls[1].headers['User-Agent']).toBe(cfg.userAgent)
-  expect(s.calls[1].url).toContain('oauth.reddit.com/search?raw_json=1&q=ciao')
-  expect(s.calls.filter((c) => c.method !== 'GET' && !c.url.includes('access_token'))).toEqual([])   // mai una scrittura
+  expect(s.calls[1].url).toContain('oauth.reddit.com/search?raw_json=1&q=hello')
+  expect(s.calls.filter((c) => c.method !== 'GET' && !c.url.includes('access_token'))).toEqual([])   // never a write
 })
 
-test('la stessa domanda non costa una seconda richiesta (cache), e il token si riusa', async () => {
+test('the same question does not cost a second request (cache), and the token is reused', async () => {
   const s = setup((u) => (u.includes('access_token') ? token() : ok()))
   await s.reddit.get('/search', { q: 'a' }); await s.reddit.get('/search', { q: 'a' }); await s.reddit.get('/search', { q: 'b' })
   expect(s.calls.length).toBe(3)   // token + a + b
 })
 
-test('non supera il suo limite al minuto: aspetta', async () => {
-  const s = setup((u) => (u.includes('access_token') ? token() : ok()))   // limite 3: token + 2 richieste, la terza aspetta
+test('does not exceed its per-minute limit: it waits', async () => {
+  const s = setup((u) => (u.includes('access_token') ? token() : ok()))   // limit 3: token + 2 requests, the third waits
   for (const q of ['1', '2', '3']) await s.reddit.get('/search', { q })
   expect(s.slept.length).toBeGreaterThan(0)
   expect(s.slept[0]).toBeGreaterThan(50_000)
 })
 
-test('un 429 rispetta Retry-After e riprova; un 401 rinnova il token', async () => {
+test('a 429 honours Retry-After and retries; a 401 renews the token', async () => {
   let n = 0
   const s = setup((u) => { if (u.includes('access_token')) return token(); n++; return n === 1 ? new Response('', { status: 429, headers: { 'retry-after': '7' } }) : n === 2 ? new Response('', { status: 401 }) : ok({ ok: true }) }, { ...cfg, ratePerMinute: 90 })
   expect(await s.reddit.get('/x')).toEqual({ ok: true })
@@ -47,7 +47,7 @@ test('un 429 rispetta Retry-After e riprova; un 401 rinnova il token', async () 
   expect(s.calls.filter((c) => c.url.includes('access_token')).length).toBe(2)
 })
 
-test('errori chiari: chiavi rifiutate, 404, 403; percorsi strani rifiutati', async () => {
+test('clear errors: rejected credentials, 404, 403; odd paths are refused', async () => {
   const bad = setup(() => new Response('', { status: 401 }))
   await expect(bad.reddit.get('/x')).rejects.toThrow('refused the credentials')
   const nf = setup((u) => (u.includes('access_token') ? token() : new Response('', { status: 404 })))
@@ -56,16 +56,16 @@ test('errori chiari: chiavi rifiutate, 404, 403; percorsi strani rifiutati', asy
   await expect(nf.reddit.get('evil')).rejects.toThrow('Invalid path')
 })
 
-test('le chiavi: mancanti = errore che dice cosa manca; il file deve essere privato', () => {
+test('credentials: missing ones give an error naming what is missing; the file must be private', () => {
   expect(() => loadConfig({}, '/nonexistent')).toThrow('REDDIT_CLIENT_ID')
   const dir = mkdtempSync(join(tmpdir(), 'rmcp-')); const f = join(dir, 'c.env')
   writeFileSync(f, 'REDDIT_CLIENT_ID=a\nREDDIT_CLIENT_SECRET="b"\nREDDIT_USER_AGENT=linux:x:1 (by /u/y)\nREDDIT_RATE_PER_MIN=500\n')
   chmodSync(f, 0o644); expect(() => loadConfig({}, f)).toThrow('chmod 600')
   chmodSync(f, 0o600); const c = loadConfig({}, f)
-  expect(c).toMatchObject({ clientId: 'a', clientSecret: 'b', ratePerMinute: 50, cacheMinutes: 10, allowNsfw: false })   // 500 è fuori scala: resta il valore sicuro
+  expect(c).toMatchObject({ clientId: 'a', clientSecret: 'b', ratePerMinute: 50, cacheMinutes: 10, allowNsfw: false })   // 500 is out of range: the safe default stays
 })
 
-test('il tetto di richieste per sessione: oltre quello non parte più niente verso Reddit', async () => {
+test('per-session request cap: past it, nothing more is sent to Reddit', async () => {
   const s = setup((u) => (u.includes('access_token') ? token() : ok()), { ...cfg, ratePerMinute: 90, maxRequests: 3, cacheMinutes: 0 })
   await s.reddit.get('/a'); await s.reddit.get('/b')   // token + 2 = 3
   await expect(s.reddit.get('/c')).rejects.toThrow('budget')

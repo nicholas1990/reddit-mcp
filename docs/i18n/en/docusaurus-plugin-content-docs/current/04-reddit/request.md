@@ -1,3 +1,8 @@
+---
+title: The request
+sidebar_position: 2
+---
+
 # The request, field by field
 
 The real form is at support.reddithelp.com → Submit a request → **Data Access Request** → role **"I'm a developer"** → inquiry **"I'm a developer and want to build a Reddit App that does not work in the Devvit ecosystem"**. These are the answers used (the email and the Reddit account name are the sender's own and are not written here).

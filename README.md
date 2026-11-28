@@ -19,11 +19,11 @@ Every answer starts with a notice that the text is **untrusted data written by s
 - Official API only, with an app-only OAuth token and a descriptive `User-Agent`.
 - Keeps **below 90 requests per minute** (default 50; Reddit's free limit is 100) with a sliding window, obeys `Retry-After` on a 429, and caches answers for 10 minutes so the same question never costs two requests.
 - An optional **allow-list of communities** (`REDDIT_ALLOWED_SUBREDDITS`): only those can be searched or read, and a search over all of Reddit is refused. And a **hard cap of requests per session** (`REDDIT_MAX_REQUESTS`, default 100).
-- No storage of Reddit content, no redistribution, **no use to train models**. Details in [docs/data-handling.md](docs/data-handling.md).
+- No storage of Reddit content, no redistribution, **no use to train models**. Details in [data handling](docs/i18n/en/docusaurus-plugin-content-docs/current/04-reddit/data-handling.md).
 
 ## Setup
 
-You need an approved Reddit Data API app (see [docs/reddit-approval.md](docs/reddit-approval.md)).
+You need an approved Reddit Data API app (see [Getting access](docs/i18n/en/docusaurus-plugin-content-docs/current/04-reddit/access.md)).
 
 ```sh
 bun install
@@ -40,9 +40,23 @@ Add it to any MCP client:
 { "mcpServers": { "reddit": { "command": "bun", "args": ["/path/to/reddit-mcp/src/index.ts"] } } }
 ```
 
+## Configuration
+
+| Setting | Default | Meaning |
+| --- | --- | --- |
+| `REDDIT_RATE_PER_MIN` | 50 | Requests per minute, 1-90 |
+| `REDDIT_CACHE_MINUTES` | 10 | In-memory cache, 0-60 |
+| `REDDIT_MAX_REQUESTS` | 100 | Hard cap per run of the server |
+| `REDDIT_ALLOW_NSFW` | false | Show adult-marked posts |
+| `REDDIT_ALLOWED_SUBREDDITS` | empty | Optional allow-list of communities |
+
+## Documentation
+
+Full documentation, in English and Italian (Docusaurus, in [`docs/`](docs/)): getting started, configuration, safety, the tools reference, and the Reddit access request. Build it with `bun run docs:build`.
+
 ## Development
 
-`bun run check` runs the type check, the linter and the tests (no network and no Reddit account needed: the tests use a fake Reddit).
+`bun run check` runs the type check, the linter, the unit tests, an end-to-end test that starts the real server against a fake Reddit (no network and no Reddit account needed), and a check that the tools reference is up to date. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Not affiliated
 

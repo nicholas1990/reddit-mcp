@@ -1,0 +1,60 @@
+import {themes as prismThemes} from 'prism-react-renderer';
+import type {Config} from '@docusaurus/types';
+import type * as Preset from '@docusaurus/preset-classic';
+
+const config: Config = {
+  title: 'reddit-mcp',
+  tagline: 'A read-only MCP server to search and read Reddit through the official Data API',
+  favicon: 'img/favicon.ico',
+
+  url: 'https://nicholas1990.github.io',
+  baseUrl: '/reddit-mcp/',
+  organizationName: 'nicholas1990',
+  projectName: 'reddit-mcp',
+
+  // Both languages are written side by side in i18n/<locale>/docusaurus-plugin-content-docs/current/: there is no
+  // docs/docs folder and neither language is a "source" that is translated. The default locale is read from the path below.
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'it'],
+    localeConfigs: {en: {label: 'English', htmlLang: 'en'}, it: {label: 'Italiano', htmlLang: 'it'}},
+  },
+
+  onBrokenLinks: 'throw',
+  markdown: {
+    format: 'detect', // .md stays CommonMark: { and < in text do not break the build
+    hooks: {onBrokenMarkdownLinks: 'throw'},
+  },
+
+  presets: [
+    [
+      'classic',
+      {
+        docs: {
+          path: 'i18n/en/docusaurus-plugin-content-docs/current',
+          routeBasePath: '/',
+          sidebarPath: './sidebars.ts',
+        },
+        blog: false,
+        theme: {customCss: './src/css/custom.css'},
+      } satisfies Preset.Options,
+    ],
+  ],
+
+  themeConfig: {
+    navbar: {
+      title: 'reddit-mcp',
+      items: [
+        {type: 'localeDropdown', position: 'right'},
+        {href: 'https://github.com/nicholas1990/reddit-mcp', label: 'GitHub', position: 'right'},
+      ],
+    },
+    footer: {
+      style: 'dark',
+      copyright: 'reddit-mcp is an independent project, not affiliated with or endorsed by Reddit, Inc.',
+    },
+    prism: {theme: prismThemes.github, darkTheme: prismThemes.dracula, additionalLanguages: ['bash', 'json']},
+  } satisfies Preset.ThemeConfig,
+};
+
+export default config;

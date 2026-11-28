@@ -1,3 +1,8 @@
+---
+title: Data handling
+sidebar_position: 3
+---
+
 # Data handling
 
 What this tool does with Reddit data, in plain words (the same text is used in the access request).
@@ -10,5 +15,5 @@ What this tool does with Reddit data, in plain words (the same text is used in t
 - **People.** Usernames come with the text they wrote because the answer must be citable; the tool does not profile users, does not follow a person across communities, and has no function that lists a user's history.
 - **Adult content** is excluded by default.
 - **Limits.** Below 90 requests per minute (default 50), at most **100 requests per session** (a hard cap in the code), `Retry-After` honoured, descriptive `User-Agent`.
-- **Scope.** By default any public community can be read. An optional allow-list (`REDDIT_ALLOWED_SUBREDDITS`) limits it to named communities: anything outside is refused before any request is sent, and a search over all of Reddit is then not possible. The purpose of the access is what the request states: research for the development and planning of the user's own products.
+- **Scope.** By default any public community can be read. An optional allow-list (`REDDIT_ALLOWED_SUBREDDITS`) limits it to named communities: anything outside is refused before any request is sent (for a bare post id, which does not name its community, the post is fetched and then withheld), and a search over all of Reddit is then not possible. The purpose of the access is what the request states: research for the development and planning of the user's own products.
 - **Reports.** The assistant is asked to cite the permalink of what it uses. Quotes in notes are short and attributed.

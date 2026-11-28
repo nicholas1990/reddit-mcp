@@ -10,7 +10,9 @@
     "test": "bun test",
     "typecheck": "bun --bun tsc -p tsconfig.json",
     "lint": "biome lint .",
-    "check": "bun run typecheck && bun run lint && bun run test"
+    "check": "bun run typecheck && bun run lint && bun run test && bun run gen:docs --check",
+    "gen:docs": "bun scripts/gen-reference.ts",
+    "docs:build": "npm --prefix docs run build"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",

@@ -54,3 +54,12 @@ test('con un elenco di community, solo quelle esistono: cerca ovunque, altre com
   const other = fake([{ data: { children: [post({ subreddit: 'politics' })] } }, { data: { children: [] } }])
   await expect(tool(other.reddit, 'reddit_get_post', c).run({ post: 'abc12', comments: 5, sort: 'top', depth: 2 })).rejects.toThrow('Only these')
 })
+
+test('con un elenco, un link a un\'altra community è rifiutato prima di ogni richiesta; un id nudo dopo la risposta', async () => {
+  const c: Config = { ...cfg, allowedSubreddits: ['socialmedia'] }
+  const f = fake([{ data: { children: [post({ subreddit: 'politics' })] } }, { data: { children: [] } }])
+  await expect(tool(f.reddit, 'reddit_get_post', c).run({ post: 'https://www.reddit.com/r/politics/comments/abc12/t/', comments: 5, sort: 'top', depth: 2 })).rejects.toThrow('Only these')
+  expect(f.paths).toEqual([])
+  await expect(tool(f.reddit, 'reddit_get_post', c).run({ post: 'abc12', comments: 5, sort: 'top', depth: 2 })).rejects.toThrow('Only these')
+  expect(f.paths).toEqual(['/comments/abc12'])
+})

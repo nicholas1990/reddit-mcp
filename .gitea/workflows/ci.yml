@@ -10,6 +10,15 @@ jobs:
         with:
           bun-version-file: .bun-version
       - run: bun install --frozen-lockfile
-      - run: bun run typecheck
-      - run: bun run lint
-      - run: bun run test
+      - run: bun run check   # tipi, lint, test (anche end-to-end), riferimento degli strumenti aggiornato
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+        working-directory: docs
+      - run: npm run build   # fallisce se un link nella documentazione è rotto
+        working-directory: docs

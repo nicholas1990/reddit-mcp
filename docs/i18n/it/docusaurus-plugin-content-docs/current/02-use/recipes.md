@@ -1,5 +1,6 @@
 ---
-title: Esempi
+# Managed by Notarius (notarius sync). Do not edit: change notarius.json, or put your own rules in a file Notarius does not manage.
+title: "Esempi"
 sidebar_position: 3
 ---
 

@@ -11,6 +11,7 @@
       "devDependencies": {
         "@biomejs/biome": "^2.6.9",
         "@types/bun": "^1.4.5",
+        "notarius": "github:nicholas1990/notarius",
         "typescript": "^7.0.2",
       },
     },
@@ -199,6 +200,8 @@
     "ms": ["ms@2.1.3", "", {}, "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="],
 
     "negotiator": ["negotiator@1.1.0", "", { "dependencies": { "content-type": "^2.1.0" } }, "sha512-NMPBRMJgiQHjbd8phG3Vebdx4kZ1H121rbl5IkMqeOsahptB9BKo/d7oJ3zTXqTgagn2bWlNSXkh0QUGM31RYg=="],
+
+    "notarius": ["notarius@github:nicholas1990/notarius#25aaf26", { "bin": { "notarius": "src/cli.ts" } }, "nicholas1990-notarius-25aaf26", "sha512-aMwjJg39QZzbAZJ5tIZnSX0Pva+OcmDQT5669plaQvR4PByk/SeifFGNzumxN+uXwx9rlNobQvrlF/D+AC8cig=="],
 
     "object-assign": ["object-assign@4.1.1", "", {}, "sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg=="],
 

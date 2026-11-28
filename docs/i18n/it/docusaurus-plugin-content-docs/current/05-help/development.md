@@ -1,5 +1,6 @@
 ---
-title: Sviluppo
+# Managed by Notarius (notarius sync). Do not edit: change notarius.json, or put your own rules in a file Notarius does not manage.
+title: "Sviluppo"
 sidebar_position: 2
 ---
 
@@ -9,6 +10,7 @@ sidebar_position: 2
 bun install
 bun run check        # tipi, lint, test, e riferimento degli strumenti aggiornato
 bun run gen:docs     # riscrive il riferimento degli strumenti (inglese e italiano) da src/tools/
+bun run docs:sync    # trasforma le pagine di docs/content/ nel sito Docusaurus
 bun run docs:build   # costruisce questo sito (fallisce se un link è rotto)
 ```
 
@@ -25,8 +27,8 @@ test/                 test end-to-end e i suoi finti
 scripts/              gen-reference.ts scrive il riferimento degli strumenti
 ```
 
-Uno strumento nuovo è un file nuovo in `src/tools/`, aggiunto all'elenco in `src/tools/index.ts`; poi `bun run gen:docs` scrive la sua pagina.
+Uno strumento nuovo è un file nuovo in `src/tools/`, aggiunto all'elenco in `src/tools/index.ts`; poi `bun run gen:docs` scrive la sua pagina (e `bun run docs:sync` la mette nel sito).
 
 - I test unitari usano un `fetch` finto. Il test end-to-end avvia il **processo vero del server** su stdio con un Reddit finto precaricato (`test/fake-reddit.ts`), quindi niente arriva mai in rete.
 - La CI gira su un Gitea privato (`.gitea/workflows/ci.yml`); GitHub ignora quella cartella.
-- Le pagine esistono in inglese e italiano affiancate in `docs/i18n/<lingua>/docusaurus-plugin-content-docs/current/`. Non c'è una cartella `docs/docs`.
+- Le pagine si scrivono una volta sola, in inglese e italiano affiancate, in `docs/content/<lingua>/`, nel modello di contenuto di [Notarius](https://github.com/nicholas1990/notarius). `bun run docs:sync` genera da lì i file Docusaurus in `docs/i18n/`, e `bun run docs:check` fallisce se non sono aggiornati: si modificano le pagine in `docs/content/`, mai quelle generate.

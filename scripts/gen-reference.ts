@@ -1,5 +1,6 @@
 /**
  * Writes the tools reference, in English and Italian, from the tools themselves (src/tools/), so it cannot drift.
+ * The pages are written in Notarius's content model (docs/content/<language>/); `notarius sync` turns them into the site.
  * `--check` only compares. Descriptions stay in English in both languages: they are the text the assistant reads.
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
@@ -30,7 +31,7 @@ function type(p: Record<string, any>): string {
   return `${p.type}${range ? ` (${range})` : ''}`
 }
 function page(w: Words): string {
-  const lines = ['---', `title: ${w.title}`, 'sidebar_position: 1', '---', '', `# ${w.title}`, '', '<!-- Generated from src/tools/ by `bun run gen:docs`. Do not edit by hand. -->', '', w.intro, '', ...(w.note ? [w.note, ''] : [])]
+  const lines = ['---', `title: ${JSON.stringify(w.title)}`, 'order: 1', '---', '', '<!-- Generated from src/tools/ by `bun run gen:docs`. Do not edit by hand. -->', '', w.intro, '', ...(w.note ? [w.note, ''] : [])]
   for (const t of tools) {
     const schema = z.toJSONSchema(z.object(t.inputSchema), { io: 'input' }) as { properties: Record<string, any>; required?: string[] }
     lines.push(`## \`${t.name}\``, '', t.description, '', `| ${w.head.join(' | ')} |`, '| --- | --- | :---: | --- | --- |')
@@ -42,7 +43,7 @@ function page(w: Words): string {
   return `${lines.join('\n').trimEnd()}\n`
 }
 
-const base = (l: string) => new URL(`../docs/i18n/${l}/docusaurus-plugin-content-docs/current/03-reference/tools.md`, import.meta.url).pathname
+const base = (l: string) => new URL(`../docs/content/${l}/03-reference/tools.md`, import.meta.url).pathname
 const outputs: [string, string][] = [[base('en'), page(EN)], [base('it'), page(IT)]]
 if (process.argv.includes('--check')) {
   const stale = outputs.filter(([f, text]) => (existsSync(f) ? readFileSync(f, 'utf8') : '') !== text).map(([f]) => f)

@@ -1,0 +1,35 @@
+/* Managed by Notarius (notarius sync). Do not edit: change notarius.json, or put your own rules in a file Notarius does not manage. */
+/* reddit-mcp colours from the accent #d9480f. Light and dark themes are both defined. */
+:root {
+  --ifm-color-primary: #d9480f;
+  --ifm-color-primary-dark: #ca430e;
+  --ifm-color-primary-darker: #bf3f0d;
+  --ifm-color-primary-darkest: #9c340b;
+  --ifm-color-primary-light: #ef5215;
+  --ifm-color-primary-lighter: #f0622a;
+  --ifm-color-primary-lightest: #f37d4e;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #f2794a;
+  --ifm-color-primary-dark: #f16a35;
+  --ifm-color-primary-darker: #ef5f27;
+  --ifm-color-primary-darkest: #d4460f;
+  --ifm-color-primary-light: #f3865c;
+  --ifm-color-primary-lighter: #f4916b;
+  --ifm-color-primary-lightest: #f6a484;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Screenshots: rounded, with a soft border, never wider than the page. */
+.markdown img {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 10px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Tables: a little room to breathe. */
+.markdown table td, .markdown table th { padding: 0.55rem 0.8rem; }

@@ -10,8 +10,10 @@
     "test": "bun test",
     "typecheck": "bun --bun tsc -p tsconfig.json",
     "lint": "biome lint .",
-    "check": "bun run typecheck && bun run lint && bun run test && bun run gen:docs --check",
+    "check": "bun run typecheck && bun run lint && bun run test && bun run gen:docs --check && bun run docs:check",
     "gen:docs": "bun scripts/gen-reference.ts",
+    "docs:sync": "notarius sync",
+    "docs:check": "notarius check",
     "docs:build": "npm --prefix docs run build"
   },
   "dependencies": {
@@ -21,6 +23,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.6.9",
     "@types/bun": "^1.4.5",
+    "notarius": "github:nicholas1990/notarius",
     "typescript": "^7.0.2"
   }
 }

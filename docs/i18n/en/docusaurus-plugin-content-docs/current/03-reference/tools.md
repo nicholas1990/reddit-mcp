@@ -1,5 +1,6 @@
 ---
-title: Tools
+# Managed by Notarius (notarius sync). Do not edit: change notarius.json, or put your own rules in a file Notarius does not manage.
+title: "Tools"
 sidebar_position: 1
 ---
 

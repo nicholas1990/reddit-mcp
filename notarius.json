@@ -1,0 +1,10 @@
+{
+  "engine": "docusaurus",
+  "name": "reddit-mcp",
+  "tagline": "A read-only MCP server to search and read Reddit through the official Data API",
+  "repo": "nicholas1990/reddit-mcp",
+  "accent": "#d9480f",
+  "locales": ["en", "it"],
+  "search": false,
+  "footer": "reddit-mcp is an independent project, not affiliated with or endorsed by Reddit, Inc."
+}

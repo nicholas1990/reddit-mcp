@@ -1,3 +1,4 @@
+// Managed by Notarius (notarius sync). Do not edit: change notarius.json, or put your own rules in a file Notarius does not manage.
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
 // The sidebar comes from the folders of the pages (01-start, 02-use, ...): no hand-written list to keep in step.

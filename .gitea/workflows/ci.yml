@@ -10,7 +10,10 @@ jobs:
         with:
           bun-version-file: .bun-version
       - run: bun install --frozen-lockfile
-      - run: bun run check   # types, lint, tests (end-to-end too), tools reference up to date
+        env:
+          # Gitea sets GITHUB_API_URL to itself, and bun would look for the notarius dev dependency there instead of on GitHub.
+          GITHUB_API_URL: https://api.github.com
+      - run: bun run check   # types, lint, tests (end-to-end too), tools reference and generated docs up to date
   docs:
     runs-on: ubuntu-latest
     steps:

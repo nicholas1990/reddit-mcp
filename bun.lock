@@ -203,7 +203,7 @@
 
     "negotiator": ["negotiator@1.1.0", "", { "dependencies": { "content-type": "^2.1.0" } }, "sha512-NMPBRMJgiQHjbd8phG3Vebdx4kZ1H121rbl5IkMqeOsahptB9BKo/d7oJ3zTXqTgagn2bWlNSXkh0QUGM31RYg=="],
 
-    "notarius": ["notarius@github:nicholas1990/notarius#9fd9c8b", { "dependencies": { "@resvg/resvg-wasm": "^2.6.2" }, "bin": { "notarius": "src/cli.ts" } }, "nicholas1990-notarius-9fd9c8b", "sha512-SBE5eAmolLTq3gGLZCOO1WFoT7xvFhj6G4GIznI431fItFOb5JBW/TL1SAoNYIM8hdzSPIE6wEbaWJi58/dV7A=="],
+    "notarius": ["notarius@github:nicholas1990/notarius#ef8f87b", { "dependencies": { "@resvg/resvg-wasm": "^2.6.2" }, "bin": { "notarius": "src/cli.ts" } }, "nicholas1990-notarius-ef8f87b", "sha512-DQeaceTarK7LMHW9nD+323+edf1lQkxj0tdcWWsU4yDiWf5hYVo7xir/bNx2CBiA8kgbXyP7JmLkfo9zEMjpTg=="],
 
     "object-assign": ["object-assign@4.1.1", "", {}, "sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg=="],
 

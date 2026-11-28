@@ -10,6 +10,7 @@ const config: Config = {
 
   url: "https://nicholas1990.github.io",
   baseUrl: "/reddit-mcp/",
+  trailingSlash: true, // explicit, as Docusaurus recommends on GitHub Pages: addresses end in a slash, which is how it serves them
   organizationName: "nicholas1990",
   projectName: "reddit-mcp",
 
